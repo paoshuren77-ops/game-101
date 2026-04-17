@@ -135,14 +135,16 @@ function evaluateTokens(tokens: Token[]) {
       continue;
     }
 
-    while (
-      operators.length &&
-      operators[operators.length - 1] !== '(' &&
-      precedence(operators[operators.length - 1]) >= precedence(token.value)
-    ) {
-      applyTop(values, operators);
+    if (token.type === 'operator') {
+      while (
+        operators.length &&
+        operators[operators.length - 1] !== '(' &&
+        precedence(operators[operators.length - 1]) >= precedence(token.value)
+      ) {
+        applyTop(values, operators);
+      }
+      operators.push(token.value);
     }
-    operators.push(token.value);
   }
 
   while (operators.length) {
